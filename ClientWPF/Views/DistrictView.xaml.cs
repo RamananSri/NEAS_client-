@@ -24,5 +24,10 @@ namespace ClientWPF.Views
         {
             InitializeComponent();
         }
+
+        private void ListView_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

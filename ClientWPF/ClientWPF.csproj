@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\APIService.cs" />
+    <Compile Include="Services\DistrictService.cs" />
     <Compile Include="ViewModels\DistrictViewModel.cs" />
     <Compile Include="Views\DistrictView.xaml.cs">
       <DependentUpon>DistrictView.xaml</DependentUpon>

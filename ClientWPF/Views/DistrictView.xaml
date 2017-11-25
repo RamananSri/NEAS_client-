@@ -4,29 +4,55 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientWPF.Views"
+      xmlns:viewmodel="clr-namespace:ClientWPF.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="MainView"
       ShowsNavigationUI="False">
 
+    <!--ViewModel-->
+    <Page.DataContext>
+        <viewmodel:DistrictViewModel></viewmodel:DistrictViewModel>
+    </Page.DataContext>
+
     <Grid>
+        <!--Rows-->
         <Grid.RowDefinitions>
             <RowDefinition Height=".1*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!--Columns-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox Background="Black">
-            
+        <!--District Combobox-->
+        <ComboBox 
+            Background="Black" 
+            ItemsSource="{Binding Districts}"
+            SelectedItem="{Binding SelectedDistrict}"
+            DisplayMemberPath="Name"
+            FontSize="25"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center">
         </ComboBox>
-        
-        <ListView Grid.Row="1">
-            
+
+        <!--Store list-->
+        <ListView Grid.Row="1" ItemsSource="{Binding SelectedDistrict.Stores}" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                   <Label Content="{Binding Name}" FontSize="25"></Label>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
+
+        <!--Personel panel-->
+        <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Primary salesperson" FontStyle="Oblique"></Label>
+            <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.Name}"></Label>    
+        </StackPanel>
         
     </Grid>
 </Page>
