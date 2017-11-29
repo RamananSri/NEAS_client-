@@ -40,7 +40,7 @@
         </ComboBox>
 
         <!--Store list-->
-        <ListView Grid.Row="1" ItemsSource="{Binding SelectedDistrict.Stores}" >
+        <ListView Grid.Row="1" ItemsSource="{Binding SelectedDistrict.Stores}" SelectedItem="{Binding SelectedStore}" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                    <Label Content="{Binding Name}" FontSize="25"></Label>
@@ -51,7 +51,15 @@
         <!--Personel panel-->
         <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Content="Primary salesperson" FontStyle="Oblique"></Label>
-            <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.Name}"></Label>    
+            <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.Name}"></Label>
+            <ListView ItemsSource="{Binding SelectedDistrict.SecondarySalesPersonel}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}" FontSize="25"></Label>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Command="{Binding DeleteCommand}" Content="Test"></Button>
         </StackPanel>
         
     </Grid>

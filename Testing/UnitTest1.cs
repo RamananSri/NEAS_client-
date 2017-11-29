@@ -1,27 +1,16 @@
-﻿using ClientWPF.Models;
-using System;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ClientWPF.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ClientWPF.Services
+namespace Testing
 {
-    class DistrictService
+    [TestClass]
+    public class UnitTest1
     {
-        APIService api;
-        string baseRoute;
-
-        public DistrictService()
+        [TestMethod]
+        public void TestMethod1()
         {
-            api = new APIService();
-            baseRoute = "district/";
-        }
-
-        async public Task<List<District>> GetAll()
-        {
-            //List<District> districts = await api.Get<List<District>>(baseRoute);
-
 
             SalesPerson s1 = new SalesPerson { ID = 1, Name = "Ole" };
             SalesPerson s2 = new SalesPerson { ID = 2, Name = "Bent" };
@@ -65,9 +54,6 @@ namespace ClientWPF.Services
             List<District> districts = new List<District>();
             districts.Add(d1);
             districts.Add(d2);
-
-
-            return districts;
         }
     }
 }
