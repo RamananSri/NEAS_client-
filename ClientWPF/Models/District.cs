@@ -10,8 +10,9 @@ namespace ClientWPF.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public List<Store> Stores { get; set; }
+
         public SalesPerson PrimarySalesPerson { get; set; }
-        public List<SalesPerson> SecondarySalesPersonel { get; set; }
+        public List<SalesPerson> Personnel { get; set; }
+        public List<Store> Stores { get; set; }
     }
 }

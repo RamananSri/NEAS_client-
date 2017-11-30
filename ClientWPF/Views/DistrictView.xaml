@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height=".1*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height=".1*"/>
         </Grid.RowDefinitions>
 
         <!--Columns-->
@@ -43,24 +44,29 @@
         <ListView Grid.Row="1" ItemsSource="{Binding SelectedDistrict.Stores}" SelectedItem="{Binding SelectedStore}" >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                   <Label Content="{Binding Name}" FontSize="25"></Label>
+                    <Label Content="{Binding Franchise}" FontSize="25"></Label>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
+        <!--Remove store button-->
+        <Button Command="{Binding RemoveStoreCommand}"  Content="Remove" Grid.Row="2" Background="red" FontSize="20"></Button>
+
         <!--Personel panel-->
         <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Content="Primary salesperson" FontStyle="Oblique"></Label>
-            <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.Name}"></Label>
-            <ListView ItemsSource="{Binding SelectedDistrict.SecondarySalesPersonel}">
+            <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.LastName}"></Label>
+            <ListView ItemsSource="{Binding SelectedDistrict.Personnel}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Name}" FontSize="25"></Label>
+                        <Label Content="{Binding LastName}" FontSize="25"></Label>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Command="{Binding DeleteCommand}" Content="Test"></Button>
+            <!--<Button Command="{Binding DeleteCommand}" Content="Test"></Button>-->
         </StackPanel>
+
+        <Label Grid.Row="2" Grid.Column="1" Content="{Binding ErrorMessage}" FontSize="20" HorizontalAlignment="Center"></Label>
         
     </Grid>
 </Page>

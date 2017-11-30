@@ -9,17 +9,10 @@ namespace ClientWPF.Commands
 {
     public class RelayCommand : ICommand
     {
-        Action<object> execute;
-        Func<object, bool> canExecute;
+        private Action<object> execute;
+        private Predicate<object> canExecute;
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        // Constructor - canExecute is optional
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             this.execute = execute;
             this.canExecute = canExecute;
@@ -27,12 +20,25 @@ namespace ClientWPF.Commands
 
         public bool CanExecute(object parameter)
         {
-            return this.canExecute == null || this.canExecute(parameter);
+            bool b = canExecute == null ? true : canExecute(parameter);
+            return b;
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add
+            {
+                CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                CommandManager.RequerySuggested -= value;
+            }
         }
 
         public void Execute(object parameter)
         {
-            this.execute(parameter);
+            execute(parameter);
         }
     }
 }

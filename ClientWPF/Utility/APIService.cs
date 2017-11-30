@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ClientWPF.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,55 +21,79 @@ namespace ClientWPF.Services
         }
 
         // Post
-        public async Task<string> Post<T>(string url, T obj)
+        public async Task<Response> Post<T>(string url, T obj)
         {
             var address = _baseAddress + url;
-            var data = Serialize(obj);
-            HttpResponseMessage response = await _client.PostAsync(address, data);
-            //string 
 
-            //return constructResponse();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-
+                var data = Serialize(obj);
+                HttpResponseMessage response = await _client.PostAsync(address, data);
+                Response result = await Deserialize<Response>(response);
+                return result;
             }
-
-
-
-            string result = await Deserialize<string>(response);
-            return result;
-
+            catch (HttpRequestException e)
+            {
+                // log exception (serilog?) 
+                throw new Exception("API Connection error");
+            }
         }
 
         // Get
         public async Task<T> Get<T>(string url)
         {
             var address = _baseAddress + url;
-            var response = await _client.GetAsync(address);
-            T result = await Deserialize<T>(response);
-            return result;
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(address);
+                T result = await Deserialize<T>(response);
+                return result;
+            }
+            catch (HttpRequestException e)
+            {
+                // log exception (serilog?) 
+                throw new Exception("API Connection error");
+            }
         }
 
         // Put
-        //public async Task<HttpResponseMessage> Put<T>(string url, T obj)
-        //{
-        //    var address = _baseAddress + url;
-        //    var data = Serialize(obj);
-        //    var response = await _client.PutAsync(address, data);
-        //    ResponseAPI result = await Deserialize<ResponseAPI>(response);
-        //    return result;
-        //}
+        public async Task<Response> Put<T>(string url, T obj)
+        {
+            var address = _baseAddress + url;
 
-        //// Delete
-        //public async Task<HttpResponseMessage> Delete(string url)
-        //{
-        //    var address = _baseAddress + url;
+            try
+            {
+                var data = Serialize(obj);
+                HttpResponseMessage response = await _client.PutAsync(address, data);
+                Response result = await Deserialize<Response>(response);
+                return result;
+            }
+            catch (HttpRequestException e)
+            {
+                // log exception (serilog?) 
+                throw new Exception("API Connection error");
+            }
+        }
 
-        //    var response = await _client.DeleteAsync(address);
-        //    ResponseAPI result = await Deserialize<R>(response);
-        //    return result;
-        //}
+        // Delete
+        public async Task<Response> Delete(string url)
+        {
+            var address = _baseAddress + url;
+
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(address);
+                Response result = await Deserialize<Response>(response);
+                return result;
+            }
+            catch (HttpRequestException e)
+            {
+                // log exception (serilog?) 
+                throw new Exception("API Connection error");
+            }
+
+        }
 
         // JSON serialize
         StringContent Serialize<T>(T obj)
@@ -79,19 +104,10 @@ namespace ClientWPF.Services
         }
 
         // JSON deserialize
-        async Task<T> Deserialize<T>(object res)
+        async Task<T> Deserialize<T>(HttpResponseMessage res)
         {
-
-            //if (res is string)
-            //{
-            //    return JsonConvert.DeserializeObject<T>((string)res);
-            //}
-
-            HttpResponseMessage mes = (HttpResponseMessage)res;
-            var content = await mes.Content.ReadAsStringAsync();
+            var content = await res.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(content);
         }
-
-
     }
 }

@@ -1,24 +1,24 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ClientWPF.Models;
+﻿using ClientWPF.Services;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ClientWPF.Models;
 
-namespace Testing
+namespace Testing.Mocks
 {
-    [TestClass]
-    public class UnitTest1
+    public class MockDistrictService : IDistrictService
     {
-        [TestMethod]
-        public void TestMethod1()
+        async public Task<List<District>> GetAll()
         {
+            SalesPerson s1 = new SalesPerson { ID = 1, FirstName = "Ole" };
+            SalesPerson s2 = new SalesPerson { ID = 2, FirstName = "Bent" };
+            SalesPerson s3 = new SalesPerson { ID = 3, FirstName = "Brian" };
 
-            SalesPerson s1 = new SalesPerson { ID = 1, Name = "Ole" };
-            SalesPerson s2 = new SalesPerson { ID = 2, Name = "Bent" };
-            SalesPerson s3 = new SalesPerson { ID = 3, Name = "Brian" };
-
-            Store st1 = new Store { ID = 1, Name = "Bilka" };
-            Store st2 = new Store { ID = 2, Name = "Netto" };
-            Store st3 = new Store { ID = 3, Name = "Fakta" };
+            Store st1 = new Store { ID = 1, Franchise = "Bilka" };
+            Store st2 = new Store { ID = 2, Franchise = "Netto" };
+            Store st3 = new Store { ID = 3, Franchise = "Fakta" };
 
             List<Store> storeList = new List<Store>();
             storeList.Add(st1);
@@ -38,7 +38,7 @@ namespace Testing
                 ID = 1,
                 Name = "Nordjylland",
                 PrimarySalesPerson = s1,
-                SecondarySalesPersonel = personList,
+                Personnel = personList,
                 Stores = storeList
             };
 
@@ -47,13 +47,14 @@ namespace Testing
                 ID = 2,
                 Name = "Sønderjylland",
                 PrimarySalesPerson = s2,
-                SecondarySalesPersonel = personList,
+                Personnel = personList,
                 Stores = storeList2
             };
 
             List<District> districts = new List<District>();
             districts.Add(d1);
             districts.Add(d2);
+            return districts;
         }
     }
 }

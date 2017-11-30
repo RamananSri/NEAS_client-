@@ -5,37 +5,85 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System;
+using System.ComponentModel;
 
 namespace ClientWPF.ViewModels
 {
     public class DistrictViewModel
     {
-        DistrictService districtService;
-        ObservableCollection<District> _districts;
+        IDistrictService districtService;
+        IStoreService storeService;
 
+        ObservableCollection<District> _districts;
         District _selectedDistrict;
         Store _selectedStore;
+        string _errorMessage;
 
+        // Constructors - dependency injection (user IoC containers instead)
+        public DistrictViewModel(IDistrictService districtService, IStoreService storeService)
+        {
+            this.districtService = districtService;
+            this.storeService = storeService;
+
+            _districts = new ObservableCollection<District>();
+            loadCommands();
+            GetDistricts();
+        }
         public DistrictViewModel(){
             districtService = new DistrictService();
+            storeService = new StoreService();
+            _districts = new ObservableCollection<District>();
+            loadCommands();
             GetDistricts();
-            DeleteCommand = new RelayCommand(onDelete, canDelete);
         }
 
-        private bool canDelete(object arg)
+        // Instatiate all commands
+        void loadCommands()
+        {
+            RemoveStoreCommand = new RelayCommand(onRemoveStore, canRemoveStore);
+        }
+
+        // Determine if item is selected to delete
+        private bool canRemoveStore(object arg)
         {
             return SelectedStore != null;
         }
 
-        private void onDelete(object obj)
+        // Delete store 
+        private void onRemoveStore(object obj)
         {
             SelectedDistrict.Stores.Remove(SelectedStore);
+
+            //try
+            //{
+            //    storeService.UpdateStore(SelectedStore);
+            //    GetDistricts(); 
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
         }
 
         // Load all districts
         async void GetDistricts(){
-            List<District> districts = await districtService.GetAll();
-            Districts = new ObservableCollection<District>(districts);
+
+            try
+            {
+                List<District> districts = await districtService.GetAll();
+
+                foreach (var item in districts)
+                {
+                    _districts.Add(item);
+                }
+
+                //_districts = new ObservableCollection<District>(districts);
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = e.Message;
+            }
         }
 
         #region Properties
@@ -64,14 +112,31 @@ namespace ClientWPF.ViewModels
             }
         }
 
-        public Store SelectedStore
+        public string ErrorMessage
         {
-            get { return _selectedStore; }
-            set { _selectedStore = value; }
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+            }
         }
 
-        // Private set - constructor
-        public ICommand DeleteCommand { get; private set; }
+        public Store SelectedStore
+        {
+            get
+            {
+                return _selectedStore;
+            }
+            set
+            {
+                _selectedStore = value;
+            }
+        }
+
+        public ICommand RemoveStoreCommand { get; private set; }
 
         #endregion
     }

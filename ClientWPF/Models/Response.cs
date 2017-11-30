@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClientWPF.Models
 {
-    public class Store
+    public class Response
     {
-        public int ID { get; set; }
-        public string Franchise { get; set; }
-
-        public District District { get; set; }
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

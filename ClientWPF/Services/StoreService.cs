@@ -7,34 +7,35 @@ using System.Threading.Tasks;
 
 namespace ClientWPF.Services
 {
-    public class DistrictService : IDistrictService
+    public class StoreService : IStoreService
     {
         APIService api;
         string baseRoute;
 
-        public DistrictService()
+        public StoreService()
         {
             api = new APIService();
-            baseRoute = "district/";
+            baseRoute = "store/";
         }
 
-        async public Task<List<District>> GetAll()
+        async public void UpdateStore(Store obj)
         {
             try
             {
-                List<District> districts = await api.Get<List<District>>(baseRoute);
+                Response res = await api.Put(baseRoute, obj);
 
-                if (!districts.Any())
+                if (!res.Success)
                 {
-                    throw new Exception("No districts found");
+                    throw new Exception(res.Message);
                 }
 
-                return districts;
             }
             catch (Exception)
             {
+
                 throw;
             }
         }
+
     }
 }

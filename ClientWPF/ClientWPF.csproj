@@ -62,6 +62,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Services\IDistrictService.cs" />
+    <Compile Include="Services\IStoreService.cs" />
+    <Compile Include="Services\StoreService.cs" />
     <Compile Include="Utility\APIService.cs" />
     <Compile Include="Services\DistrictService.cs" />
     <Compile Include="ViewModels\DistrictViewModel.cs" />

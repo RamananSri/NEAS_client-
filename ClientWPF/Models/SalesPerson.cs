@@ -9,6 +9,9 @@ namespace ClientWPF.Models
     public class SalesPerson
     {
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public List<District> Districts { get; set; }
     }
 }
