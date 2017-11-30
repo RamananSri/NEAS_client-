@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System;
-using System.ComponentModel;
 
 namespace ClientWPF.ViewModels
 {
@@ -19,7 +18,7 @@ namespace ClientWPF.ViewModels
         Store _selectedStore;
         string _errorMessage;
 
-        // Constructors - dependency injection (user IoC containers instead)
+        // Constructors - dependency injection (use IoC containers instead)
         public DistrictViewModel(IDistrictService districtService, IStoreService storeService)
         {
             this.districtService = districtService;
@@ -29,7 +28,8 @@ namespace ClientWPF.ViewModels
             loadCommands();
             GetDistricts();
         }
-        public DistrictViewModel(){
+        public DistrictViewModel()
+        {
             districtService = new DistrictService();
             storeService = new StoreService();
             _districts = new ObservableCollection<District>();
@@ -49,42 +49,46 @@ namespace ClientWPF.ViewModels
             return SelectedStore != null;
         }
 
-        // Delete store 
+        // Remove store 
         private void onRemoveStore(object obj)
         {
-            SelectedDistrict.Stores.Remove(SelectedStore);
+            Store updatedStore = _selectedStore;
+            updatedStore.DistrictID = null;
 
-            //try
-            //{
-            //    storeService.UpdateStore(SelectedStore);
-            //    GetDistricts(); 
-            //}
-            //catch (Exception)
-            //{
-
-            //    throw;
-            //}
+            try{
+                storeService.UpdateStore(updatedStore);
+                // UI doesnt update - INotifyPropertyChanged ??
+                SelectedDistrict.Stores.Remove(SelectedStore);
+            }
+            catch (Exception e){
+                ErrorMessage = e.Message;
+            }            
         }
 
         // Load all districts
         async void GetDistricts(){
-
-            try
-            {
+            try{
                 List<District> districts = await districtService.GetAll();
 
                 foreach (var item in districts)
                 {
                     _districts.Add(item);
                 }
-
-                //_districts = new ObservableCollection<District>(districts);
             }
-            catch (Exception e)
-            {
+            catch (Exception e){
                 ErrorMessage = e.Message;
             }
         }
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+
+        //public void RaisePropertyChanged(string propertyName)
+        //{
+        //    if (PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
 
         #region Properties
 

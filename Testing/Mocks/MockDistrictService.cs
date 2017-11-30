@@ -54,6 +54,7 @@ namespace Testing.Mocks
             List<District> districts = new List<District>();
             districts.Add(d1);
             districts.Add(d2);
+
             return districts;
         }
     }

@@ -54,8 +54,11 @@
 
         <!--Personel panel-->
         <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label Content="Primary salesperson" FontStyle="Oblique"></Label>
-            <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.LastName}"></Label>
+            <Label Content="Primary salesperson" FontSize="25"></Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.FirstName}" FontSize="20"></Label>
+                <Label Content="{Binding SelectedDistrict.PrimarySalesPerson.LastName}" FontSize="20"></Label>
+            </StackPanel>
             <ListView ItemsSource="{Binding SelectedDistrict.Personnel}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

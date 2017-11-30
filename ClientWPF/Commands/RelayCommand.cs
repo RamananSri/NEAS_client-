@@ -7,6 +7,8 @@ using System.Windows.Input;
 
 namespace ClientWPF.Commands
 {
+    // Source: Gill Cleeren - Practical MVVM
+
     public class RelayCommand : ICommand
     {
         private Action<object> execute;
